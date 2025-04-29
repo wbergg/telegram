@@ -83,3 +83,22 @@ func (t *Tele) ReadM() (tgbotapi.UpdatesChannel, error) {
 
 	return updates, err
 }
+
+func (t *Tele) SendTo(chatID int64, message string) (tgbotapi.Message, error) {
+
+	msg := tgbotapi.NewMessage(chatID, message)
+
+	// Debug
+	if t.stdout {
+		fmt.Println(msg)
+		return tgbotapi.Message{}, nil
+	}
+
+	m, err := t.bot.Send(msg)
+
+	if err != nil {
+		log.Errorf("Failed to send message to %d: %v", chatID, err)
+	}
+
+	return m, err
+}
